@@ -1,25 +1,34 @@
 import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { ChevronLeft, ChevronRight, Image, Maximize2, X } from 'lucide-react'
-
-const portfolioImageBase = import.meta.env.DEV
-  ? '/@fs/D:/000工作/CC/个人网页/lidian-portfolio/dist/assets/作品集'
-  : '/assets/作品集'
+import illustration1 from '../assets/portfolio/illustration-1.jpg'
+import illustration2 from '../assets/portfolio/illustration-2.jpg'
+import illustration3 from '../assets/portfolio/illustration-3.jpg'
+import illustration4 from '../assets/portfolio/illustration-4.jpg'
+import illustration5 from '../assets/portfolio/illustration-5.jpg'
+import modeling1 from '../assets/portfolio/modeling-1.png'
+import modeling2 from '../assets/portfolio/modeling-2.png'
+import aiImage1 from '../assets/portfolio/ai-image-1.png'
+import aiImage2 from '../assets/portfolio/ai-image-2.png'
+import aiImage3 from '../assets/portfolio/ai-image-3.png'
+import prototype1 from '../assets/portfolio/prototype-1.png'
+import prototype2 from '../assets/portfolio/prototype-2.png'
+import prototype3 from '../assets/portfolio/prototype-3.png'
 
 const galleryImages = [
-  { src: `${portfolioImageBase}/插画1.jpg`, title: '插画 01', category: 'Illustration' },
-  { src: `${portfolioImageBase}/插画2.jpg`, title: '插画 02', category: 'Illustration' },
-  { src: `${portfolioImageBase}/插画3.jpg`, title: '插画 03', category: 'Illustration' },
-  { src: `${portfolioImageBase}/插画4.jpg`, title: '插画 04', category: 'Illustration' },
-  { src: `${portfolioImageBase}/插画5.jpg`, title: '插画 05', category: 'Illustration' },
-  { src: `${portfolioImageBase}/建模1.png`, title: '建模 01', category: '3D Modeling' },
-  { src: `${portfolioImageBase}/建模2.png`, title: '建模 02', category: '3D Modeling' },
-  { src: `${portfolioImageBase}/AI生图1.png`, title: 'AI 生图 01', category: 'AI Image' },
-  { src: `${portfolioImageBase}/AI生图2.png`, title: 'AI 生图 02', category: 'AI Image' },
-  { src: `${portfolioImageBase}/AI生图3.png`, title: 'AI 生图 03', category: 'AI Image' },
-  { src: `${portfolioImageBase}/原型1.png`, title: '原型 01', category: 'Prototype' },
-  { src: `${portfolioImageBase}/原型2.png`, title: '原型 02', category: 'Prototype' },
-  { src: `${portfolioImageBase}/原型3.png`, title: '原型 03', category: 'Prototype' },
+  { src: illustration1, title: '插画 01', category: 'Illustration' },
+  { src: illustration2, title: '插画 02', category: 'Illustration' },
+  { src: illustration3, title: '插画 03', category: 'Illustration' },
+  { src: illustration4, title: '插画 04', category: 'Illustration' },
+  { src: illustration5, title: '插画 05', category: 'Illustration' },
+  { src: modeling1, title: '建模 01', category: '3D Modeling' },
+  { src: modeling2, title: '建模 02', category: '3D Modeling' },
+  { src: aiImage1, title: 'AI 生图 01', category: 'AI Image' },
+  { src: aiImage2, title: 'AI 生图 02', category: 'AI Image' },
+  { src: aiImage3, title: 'AI 生图 03', category: 'AI Image' },
+  { src: prototype1, title: '原型 01', category: 'Prototype' },
+  { src: prototype2, title: '原型 02', category: 'Prototype' },
+  { src: prototype3, title: '原型 03', category: 'Prototype' },
 ]
 
 export default function Portfolio() {
