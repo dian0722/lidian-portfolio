@@ -1,10 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react'
 import Hero from './components/Hero'
-import Experience from './components/Experience'
-import Competition from './components/Competition'
-import Portfolio from './components/Portfolio'
-import About from './components/About'
-import Contact from './components/Contact'
 import ScrollToTop from './components/ScrollToTop'
 import DetailPageShell from './components/DetailPageShell'
 import CatGreetingLoader from './components/CatGreetingLoader'
@@ -29,6 +24,12 @@ function scrollToElement(sectionId: SectionId, behavior: ScrollBehavior = 'smoot
   window.history.replaceState(null, '', `#${sectionId}`)
   return true
 }
+
+const Experience = lazy(() => import('./components/Experience'))
+const Competition = lazy(() => import('./components/Competition'))
+const Portfolio = lazy(() => import('./components/Portfolio'))
+const About = lazy(() => import('./components/About'))
+const Contact = lazy(() => import('./components/Contact'))
 
 const transitionVariants: TransitionVariant[] = ['look', 'ai-video']
 const TRANSITION_DURATION_MS = 1500
@@ -239,7 +240,9 @@ export default function App() {
           </>
         ) : detailSection ? (
           <DetailPageShell activeSection={detailSection} onNavigate={navigateToSection}>
-            {detailContent}
+            <Suspense fallback={<div className="min-h-screen" aria-hidden="true" />}>
+              {detailContent}
+            </Suspense>
           </DetailPageShell>
         ) : null}
       </div>

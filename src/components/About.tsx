@@ -102,6 +102,8 @@ export default function About() {
               <img
                 src={photo.src}
                 alt={photo.label}
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover opacity-90 saturate-[0.92] contrast-[1.04] transition duration-700 group-hover:scale-105 group-hover:opacity-100 group-hover:saturate-110"
                 style={{ objectPosition: photo.objectPosition }}
               />

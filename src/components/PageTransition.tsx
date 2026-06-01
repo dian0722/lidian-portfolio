@@ -24,7 +24,7 @@ export default function PageTransition({ durationMs, variant }: PageTransitionPr
     <div className="page-transition" style={style} aria-hidden="true">
       <div className="page-transition__grid" />
       <div className="page-transition__text-wrap">
-        <img className="page-transition__text" src={textAssets[variant]} alt="" />
+        <img className="page-transition__text" src={textAssets[variant]} alt="" decoding="async" />
       </div>
       <div className="page-transition__track">
         <svg

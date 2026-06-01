@@ -118,7 +118,14 @@ export default function Portfolio() {
               className="portfolio-gallery__card group"
             >
               <div className="portfolio-gallery__image-wrap">
-                <img src={item.src} alt={item.title} className="portfolio-gallery__image" loading="lazy" />
+                <img
+                  src={item.src}
+                  alt={item.title}
+                  className="portfolio-gallery__image"
+                  loading="lazy"
+                  decoding="async"
+                  sizes="(min-width: 1280px) 310px, (min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                />
                 <div className="portfolio-gallery__overlay">
                   <span className="portfolio-gallery__chip">{item.category}</span>
                   <button
@@ -198,7 +205,12 @@ export default function Portfolio() {
                 </button>
               </div>
               <div className="portfolio-lightbox__image-shell">
-                <img src={activeImage.src} alt={activeImage.title} className="portfolio-lightbox__image" />
+                <img
+                  src={activeImage.src}
+                  alt={activeImage.title}
+                  className="portfolio-lightbox__image"
+                  decoding="async"
+                />
               </div>
             </motion.div>
           </motion.div>

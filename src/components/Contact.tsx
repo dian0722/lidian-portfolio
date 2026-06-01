@@ -83,6 +83,8 @@ export default function Contact() {
                 <img
                   src={wechatQr}
                   alt="微信二维码"
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-contain"
                 />
               </div>
