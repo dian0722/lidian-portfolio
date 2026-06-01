@@ -1,113 +1,200 @@
-import { motion } from 'motion/react'
-import { ExternalLink, FileText, Bot, Palette, Video } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
+import { ChevronLeft, ChevronRight, Image, Maximize2, X } from 'lucide-react'
 
-interface PortfolioItem {
-  title: string
-  description: string
-  type: string
-  typeIcon: 'doc' | 'ai' | 'design' | 'video'
-  url: string
-  tags: string[]
-}
+const portfolioImageBase = import.meta.env.DEV
+  ? '/@fs/D:/000工作/CC/个人网页/lidian-portfolio/dist/assets/作品集'
+  : '/assets/作品集'
 
-const portfolios: PortfolioItem[] = [
-  {
-    title: '产品策划作品（欧莱雅）',
-    description: '市场调研报告、产品设计方案（2D/3D 设计图）、产品介绍视频脚本、视频剪辑成品',
-    type: '产品策划',
-    typeIcon: 'doc',
-    url: 'https://kcnj16vgv3hf.feishu.cn/wiki/Q7HDwhOwmip8sSkC2yKczfAvn1e?from=from_copylink',
-    tags: ['市场调研', '产品设计', '2D/3D设计', '视频脚本'],
-  },
-  {
-    title: 'AI 工作流搭建',
-    description: '电商平台客户忠诚度预测与维护策略方案，KMeans 聚类分群算法应用，提示词优化与温度调节',
-    type: 'AI Agent',
-    typeIcon: 'ai',
-    url: 'https://kcnj16vgv3hf.feishu.cn/docx/XIlYdA7q9oSTJoxXa2pcycG8nny?from=from_copylink',
-    tags: ['AI Agent', 'KMeans聚类', '提示词工程'],
-  },
-  {
-    title: '美术设计能力',
-    description: '涵盖平面设计、UI 设计、视觉创作等多维度设计作品集',
-    type: '设计',
-    typeIcon: 'design',
-    url: 'https://kcnj16vgv3hf.feishu.cn/docx/Gc9ndD1VuoNraCxeJdDcNvgEnOb?from=from_copylink',
-    tags: ['平面设计', 'UI设计', '视觉创作'],
-  },
+const galleryImages = [
+  { src: `${portfolioImageBase}/插画1.jpg`, title: '插画 01', category: 'Illustration' },
+  { src: `${portfolioImageBase}/插画2.jpg`, title: '插画 02', category: 'Illustration' },
+  { src: `${portfolioImageBase}/插画3.jpg`, title: '插画 03', category: 'Illustration' },
+  { src: `${portfolioImageBase}/插画4.jpg`, title: '插画 04', category: 'Illustration' },
+  { src: `${portfolioImageBase}/插画5.jpg`, title: '插画 05', category: 'Illustration' },
+  { src: `${portfolioImageBase}/建模1.png`, title: '建模 01', category: '3D Modeling' },
+  { src: `${portfolioImageBase}/建模2.png`, title: '建模 02', category: '3D Modeling' },
+  { src: `${portfolioImageBase}/AI生图1.png`, title: 'AI 生图 01', category: 'AI Image' },
+  { src: `${portfolioImageBase}/AI生图2.png`, title: 'AI 生图 02', category: 'AI Image' },
+  { src: `${portfolioImageBase}/AI生图3.png`, title: 'AI 生图 03', category: 'AI Image' },
+  { src: `${portfolioImageBase}/原型1.png`, title: '原型 01', category: 'Prototype' },
+  { src: `${portfolioImageBase}/原型2.png`, title: '原型 02', category: 'Prototype' },
+  { src: `${portfolioImageBase}/原型3.png`, title: '原型 03', category: 'Prototype' },
 ]
 
-const iconMap = {
-  doc: FileText,
-  ai: Bot,
-  design: Palette,
-  video: Video,
-}
-
-const typeColors: Record<string, string> = {
-  '产品策划': 'bg-blue-50 text-blue-700 border-blue-100',
-  'AI Agent': 'bg-purple-50 text-purple-700 border-purple-100',
-  '设计': 'bg-pink-50 text-pink-700 border-pink-100',
-}
-
 export default function Portfolio() {
-  return (
-    <section id="portfolio" className="py-20 md:py-32 px-6 md:px-10 max-w-[1200px] mx-auto">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="mb-16"
-      >
-        <h2 className="text-3xl md:text-4xl font-normal text-[rgba(30,50,90,0.95)] tracking-tight">作品集</h2>
-        <p className="text-sm text-[rgba(30,50,90,0.5)] mt-2">产品策划、AI 工作流、设计作品一览</p>
-      </motion.div>
+  const [activeImageIndex, setActiveImageIndex] = useState<number | null>(null)
+  const activeImage = activeImageIndex !== null ? galleryImages[activeImageIndex] : null
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {portfolios.map((item, index) => {
-          const IconComponent = iconMap[item.typeIcon]
-          return (
-            <motion.a
-              key={item.title}
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 30 }}
+  const showPreviousImage = useCallback(() => {
+    setActiveImageIndex((currentIndex) => {
+      if (currentIndex === null) return currentIndex
+      return (currentIndex - 1 + galleryImages.length) % galleryImages.length
+    })
+  }, [])
+
+  const showNextImage = useCallback(() => {
+    setActiveImageIndex((currentIndex) => {
+      if (currentIndex === null) return currentIndex
+      return (currentIndex + 1) % galleryImages.length
+    })
+  }, [])
+
+  useEffect(() => {
+    if (!activeImage) return
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setActiveImageIndex(null)
+      }
+      if (event.key === 'ArrowLeft') {
+        showPreviousImage()
+      }
+      if (event.key === 'ArrowRight') {
+        showNextImage()
+      }
+    }
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [activeImage, showNextImage, showPreviousImage])
+
+  return (
+    <section id="portfolio" className="portfolio-gallery relative min-h-screen px-6 py-20 md:px-10 md:py-32">
+      <div className="portfolio-gallery__halo" aria-hidden="true" />
+      <div className="relative z-10 mx-auto max-w-[1280px]">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55 }}
+          className="mb-12 grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-end"
+        >
+          <div>
+            <span className="section-eyebrow">Visual Archive</span>
+            <h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-[-0.06em] text-[#EAF2FF] md:text-6xl">
+              作品集
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-readable md:text-base">
+              汇集插画、建模、AI 生图与产品原型作品，以沉浸式暗场画廊展示视觉创作与界面表达能力。游戏经历在[关于我]页面。
+            </p>
+          </div>
+          <div className="portfolio-gallery__stat glass cyber-panel-line rounded-lg p-5">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-cyber">Gallery Count</p>
+                <p className="mt-2 text-3xl font-semibold text-cyan-100">{galleryImages.length}</p>
+              </div>
+              <div className="cyber-icon rounded-lg p-3">
+                <Image className="h-5 w-5" />
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="portfolio-gallery__grid">
+          {galleryImages.map((item, index) => (
+            <motion.article
+              key={item.src}
+              initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
-              whileHover={{ y: -6 }}
-              className="group rounded-2xl bg-white/40 backdrop-blur-xl border border-white/30 p-6 md:p-8 card-hover flex flex-col"
+              transition={{ duration: 0.5, delay: index * 0.045 }}
+              className="portfolio-gallery__card group"
             >
-              {/* Type badge */}
-              <div className="flex items-center justify-between mb-4">
-                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border ${typeColors[item.type] || 'bg-gray-50 text-gray-700 border-gray-100'}`}>
-                  <IconComponent className="w-3 h-3" />
-                  {item.type}
-                </span>
-                <ExternalLink className="w-4 h-4 text-[rgba(30,50,90,0.3)] group-hover:text-[rgba(30,50,90,0.6)] transition-colors" />
+              <div className="portfolio-gallery__image-wrap">
+                <img src={item.src} alt={item.title} className="portfolio-gallery__image" loading="lazy" />
+                <div className="portfolio-gallery__overlay">
+                  <span className="portfolio-gallery__chip">{item.category}</span>
+                  <button
+                    type="button"
+                    className="portfolio-gallery__zoom"
+                    onClick={() => setActiveImageIndex(index)}
+                    aria-label={`放大查看 ${item.title}`}
+                  >
+                    <Maximize2 className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
-
-              <h3 className="text-lg font-normal text-[rgba(30,50,90,0.95)] mb-2 group-hover:text-[rgba(30,50,90,1)] transition-colors">
-                {item.title}
-              </h3>
-              <p className="text-sm text-[rgba(30,50,90,0.6)] leading-relaxed mb-4 flex-1">
-                {item.description}
-              </p>
-
-              {/* Tags */}
-              <div className="flex flex-wrap gap-1.5">
-                {item.tags.map((tag) => (
-                  <span key={tag} className="px-2 py-0.5 rounded text-[11px] text-[rgba(30,50,90,0.5)] bg-[rgba(30,50,90,0.05)]">
-                    {tag}
-                  </span>
-                ))}
+              <div className="portfolio-gallery__meta">
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <strong>{item.title}</strong>
               </div>
-            </motion.a>
-          )
-        })}
+            </motion.article>
+          ))}
+        </div>
       </div>
+
+      <AnimatePresence>
+        {activeImage && (
+          <motion.div
+            className="portfolio-lightbox"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${activeImage.title} 完整图片预览`}
+            onClick={() => setActiveImageIndex(null)}
+          >
+            <div className="portfolio-lightbox__grid" aria-hidden="true" />
+            <button
+              type="button"
+              className="portfolio-lightbox__nav portfolio-lightbox__nav--prev"
+              onClick={(event) => {
+                event.stopPropagation()
+                showPreviousImage()
+              }}
+              aria-label="查看上一张作品"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
+            <button
+              type="button"
+              className="portfolio-lightbox__nav portfolio-lightbox__nav--next"
+              onClick={(event) => {
+                event.stopPropagation()
+                showNextImage()
+              }}
+              aria-label="查看下一张作品"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
+            <motion.div
+              className="portfolio-lightbox__panel"
+              initial={{ opacity: 0, scale: 0.94, y: 24 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 18 }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="portfolio-lightbox__header">
+                <div>
+                  <span>{activeImage.category}</span>
+                  <strong>{activeImage.title} · {String((activeImageIndex ?? 0) + 1).padStart(2, '0')} / {String(galleryImages.length).padStart(2, '0')}</strong>
+                </div>
+                <button
+                  type="button"
+                  className="portfolio-lightbox__close"
+                  onClick={() => setActiveImageIndex(null)}
+                  aria-label="关闭完整图片预览"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+              <div className="portfolio-lightbox__image-shell">
+                <img src={activeImage.src} alt={activeImage.title} className="portfolio-lightbox__image" />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }

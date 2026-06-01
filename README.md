@@ -16,6 +16,22 @@ npm run dev
 - lucide-react（图标）
 - motion（动画）
 
+## GitHub Pages 部署
+
+项目按 GitHub Pages 项目站点配置，仓库地址：
+
+```text
+https://github.com/dian0722/lidian-portfolio.git
+```
+
+部署后访问地址：
+
+```text
+https://dian0722.github.io/lidian-portfolio/
+```
+
+推送到 `main` 分支后，`.github/workflows/deploy.yml` 会自动构建并发布 `dist`。
+
 ## 项目结构
 
 ```

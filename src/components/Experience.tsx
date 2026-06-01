@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { ChevronDown, ExternalLink } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 
 interface Highlight {
   title: string
@@ -114,10 +114,10 @@ const experiences: ExperienceItem[] = [
 function ExperienceCard({ item, index }: { item: ExperienceItem; index: number }) {
   const [expanded, setExpanded] = useState(false)
 
-  const industryColors: Record<string, string> = {
-    '互联网 / 游戏': 'bg-blue-100 text-blue-800',
-    '互联网': 'bg-indigo-100 text-indigo-800',
-    '汽车制造': 'bg-amber-100 text-amber-800',
+  const industryStyles: Record<string, string> = {
+    '互联网 / 游戏': 'border-cyan-200/24 bg-cyan-300/8 text-cyan-100',
+    '互联网': 'border-violet-200/24 bg-violet-300/8 text-violet-100',
+    '汽车制造': 'border-yellow-200/24 bg-yellow-300/8 text-yellow-100',
   }
 
   return (
@@ -129,53 +129,59 @@ function ExperienceCard({ item, index }: { item: ExperienceItem; index: number }
       className={`relative pl-8 md:pl-16 ${expanded ? 'md:col-span-2' : ''}`}
     >
       {/* Timeline dot */}
-      <div className="absolute left-0 top-6 w-3 h-3 rounded-full bg-[#2C3E50] border-2 border-[#f0f0f0] z-10" />
+      <div className="absolute left-0 top-6 z-10 h-3.5 w-3.5 rounded-full border-2 border-[#050711] bg-cyan-300 shadow-[0_0_20px_rgba(0,229,255,0.9)]" />
 
       <motion.div
         layout
         onClick={() => setExpanded(!expanded)}
-        className="cursor-pointer rounded-2xl bg-white/40 backdrop-blur-xl border border-white/30 p-6 md:p-8 card-hover"
+        className={`glass cyber-panel-line cursor-pointer rounded-lg p-6 md:p-8 card-hover ${expanded ? 'border-cyan-200/35 shadow-[0_0_44px_rgba(0,229,255,0.14)]' : ''}`}
         whileHover={{ scale: expanded ? 1 : 1.01 }}
       >
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-5">
           <div>
-            <div className="flex flex-wrap items-center gap-2 mb-2">
-              <span className={`px-2.5 py-1 rounded-full text-[11px] font-medium ${industryColors[item.industry] || 'bg-gray-100 text-gray-700'}`}>
+            <div className="flex flex-wrap items-center gap-2 mb-3">
+              <span className={`px-2.5 py-1 rounded-full text-[11px] font-semibold border ${industryStyles[item.industry] || 'border-cyan-200/20 bg-cyan-300/8 text-cyan-100'}`}>
                 {item.industry}
               </span>
-              <span className="px-2.5 py-1 rounded-full text-[11px] font-medium border border-[rgba(30,50,90,0.2)] text-[rgba(30,50,90,0.7)]">
+              <span className="cyber-pill px-2.5 py-1 text-[11px] font-semibold">
                 {item.function_}
               </span>
             </div>
-            <h3 className="text-lg md:text-xl font-normal text-[rgba(30,50,90,0.95)]">{item.company}</h3>
-            <p className="text-sm text-[rgba(30,50,90,0.6)] mt-0.5">{item.position} · {item.duration}</p>
+            <h3 className="text-lg md:text-xl font-semibold text-[#F4F8FF] tracking-tight">{item.company}</h3>
+            <p className="mt-1 text-sm text-[#9FB2D0]">{item.position} · <span className="font-mono text-xs tracking-[0.08em]">{item.duration}</span></p>
           </div>
           <motion.div
-            animate={{ rotate: expanded ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
-            className="shrink-0 mt-1"
+            className="experience-expand-trigger shrink-0 mt-1"
+            data-expanded={expanded}
+            aria-hidden="true"
           >
-            <ChevronDown className="w-5 h-5 text-[rgba(30,50,90,0.4)]" />
+            <motion.span
+              animate={{ rotate: expanded ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+              className="experience-expand-trigger__icon"
+            >
+              <ChevronDown className="w-4 h-4" />
+            </motion.span>
           </motion.div>
         </div>
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-1.5 mb-4">
+        <div className="flex flex-wrap gap-1.5 mb-5">
           {item.tags.map((tag) => (
-            <span key={tag} className="px-2 py-0.5 rounded text-[11px] text-[rgba(30,50,90,0.5)] bg-[rgba(30,50,90,0.05)]">
+            <span key={tag} className="cyber-pill px-2.5 py-1 text-[11px]">
               {tag}
             </span>
           ))}
         </div>
 
         {/* Summary - always visible */}
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {item.highlights.slice(0, 2).map((h) => (
-            <div key={h.title} className="flex gap-2">
-              <span className="text-[rgba(30,50,90,0.3)] mt-1 shrink-0">•</span>
-              <p className="text-sm text-[rgba(30,50,90,0.7)] leading-relaxed">
-                <span className="font-medium text-[rgba(30,50,90,0.85)]">{h.title}：</span>
+            <div key={h.title} className="flex gap-3">
+              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300/80" />
+              <p className="text-sm text-readable leading-relaxed">
+                <span className="font-semibold text-[#DCEAFF]">{h.title}：</span>
                 {h.description.slice(0, 60)}...
               </p>
             </div>
@@ -192,21 +198,21 @@ function ExperienceCard({ item, index }: { item: ExperienceItem; index: number }
               transition={{ duration: 0.3, ease: 'easeOut' }}
               className="overflow-hidden"
             >
-              <div className="pt-4 mt-4 border-t border-white/20 space-y-4">
+              <div className="pt-5 mt-5 border-t border-cyan-200/12 space-y-4">
                 {item.highlights.map((h) => (
-                  <div key={h.title} className="bg-white/30 rounded-xl p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-sm font-medium text-[rgba(30,50,90,0.9)]">{h.title}</h4>
+                  <div key={h.title} className="rounded-md border border-cyan-200/10 bg-white/[0.035] p-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                      <h4 className="text-sm font-semibold text-[#F4F8FF]">{h.title}</h4>
                       {h.metrics && (
-                        <span className="text-xs font-medium text-[#E74C3C] bg-red-50 px-2 py-0.5 rounded-full">
+                        <span className="cyber-pill px-2.5 py-1 text-xs font-semibold text-fuchsia-100 border-fuchsia-200/24 bg-fuchsia-300/8">
                           {h.metrics}
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-[rgba(30,50,90,0.7)] leading-relaxed">{h.description}</p>
+                    <p className="text-sm text-readable leading-relaxed">{h.description}</p>
                     {h.tools && (
-                      <div className="flex items-center gap-1.5 mt-2 text-[11px] text-[rgba(30,50,90,0.4)]">
-                        <span>工具/方法：</span>
+                      <div className="flex items-center gap-1.5 mt-3 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-cyber">
+                        <span>Tools:</span>
                         <span>{h.tools}</span>
                       </div>
                     )}
@@ -223,7 +229,7 @@ function ExperienceCard({ item, index }: { item: ExperienceItem; index: number }
 
 export default function Experience() {
   return (
-    <section id="experience" className="py-20 md:py-32 px-6 md:px-10 max-w-[1200px] mx-auto">
+    <section id="experience" className="relative py-20 md:py-32 px-6 md:px-10 max-w-[1200px] mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -231,14 +237,15 @@ export default function Experience() {
         transition={{ duration: 0.6 }}
         className="mb-16"
       >
-        <h2 className="text-3xl md:text-4xl font-normal text-[rgba(30,50,90,0.95)] tracking-tight">工作经验</h2>
-        <p className="text-sm text-[rgba(30,50,90,0.5)] mt-2">三段工作经历，横跨产品策划、海外运营与海外销售</p>
+        <span className="section-eyebrow">Career Trace</span>
+        <h2 className="mt-4 text-3xl md:text-5xl font-semibold text-[#EAF2FF] tracking-[-0.05em]">工作经验</h2>
+        <p className="text-sm md:text-base text-readable mt-3 max-w-2xl">三段工作经历，横跨产品策划、海外运营与海外销售，把商业洞察转化为可落地的增长动作。</p>
       </motion.div>
 
       {/* Timeline */}
       <div className="relative">
         {/* Timeline line */}
-        <div className="absolute left-[5px] top-6 bottom-6 w-px bg-[rgba(30,50,90,0.15)]" />
+        <div className="absolute left-[6px] top-6 bottom-6 w-px bg-gradient-to-b from-cyan-300/70 via-violet-300/30 to-transparent shadow-[0_0_18px_rgba(0,229,255,0.35)]" />
 
         <div className="space-y-8">
           {experiences.map((item, index) => (

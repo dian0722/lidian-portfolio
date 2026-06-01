@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { Trophy, ExternalLink } from 'lucide-react'
+import { Trophy } from 'lucide-react'
 
 interface CompetitionItem {
   name: string
@@ -40,7 +40,7 @@ const competitions: CompetitionItem[] = [
 
 export default function Competition() {
   return (
-    <section id="competition" className="py-20 md:py-32 px-6 md:px-10 max-w-[1200px] mx-auto">
+    <section id="competition" className="relative py-20 md:py-32 px-6 md:px-10 max-w-[1200px] mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -48,8 +48,9 @@ export default function Competition() {
         transition={{ duration: 0.6 }}
         className="mb-16"
       >
-        <h2 className="text-3xl md:text-4xl font-normal text-[rgba(30,50,90,0.95)] tracking-tight">竞赛经历</h2>
-        <p className="text-sm text-[rgba(30,50,90,0.5)] mt-2">以赛代练，验证产品思维与创新能力</p>
+        <span className="section-eyebrow">Achievement Log</span>
+        <h2 className="mt-4 text-3xl md:text-5xl font-semibold text-[#EAF2FF] tracking-[-0.05em]">竞赛经历</h2>
+        <p className="text-sm md:text-base text-readable mt-3 max-w-2xl">以赛代练，把产品判断、AI 工作流和视觉叙事压进真实竞争环境中验证。</p>
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -60,27 +61,27 @@ export default function Competition() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-50px' }}
             transition={{ duration: 0.6, delay: index * 0.15 }}
-            className="rounded-2xl bg-white/40 backdrop-blur-xl border border-white/30 p-6 md:p-8 card-hover"
+            className="glass cyber-panel-line rounded-lg p-6 md:p-8 card-hover"
           >
             {/* Result badge */}
-            <div className="flex items-center gap-2 mb-4">
-              <div className="bg-[#E74C3C]/10 p-2 rounded-full">
-                <Trophy className="w-4 h-4 text-[#E74C3C]" />
+            <div className="flex flex-wrap items-center gap-2 mb-5">
+              <div className="cyber-icon p-2 rounded-full">
+                <Trophy className="w-4 h-4" />
               </div>
-              <span className="text-xs font-medium text-[#E74C3C] bg-red-50 px-3 py-1 rounded-full">
+              <span className="cyber-pill px-3 py-1 text-xs font-semibold text-[#FFE7A3] border-yellow-200/25 bg-yellow-300/8">
                 {comp.result}
               </span>
             </div>
 
-            <h3 className="text-lg md:text-xl font-normal text-[rgba(30,50,90,0.95)] mb-1">{comp.name}</h3>
-            <p className="text-sm text-[rgba(30,50,90,0.6)] mb-1">{comp.role} · {comp.field}</p>
-            <p className="text-xs text-[rgba(30,50,90,0.4)] mb-5">{comp.duration}</p>
+            <h3 className="text-lg md:text-xl font-semibold text-[#F4F8FF] tracking-tight mb-1">{comp.name}</h3>
+            <p className="text-sm text-[#A8BAD8] mb-1">{comp.role} · {comp.field}</p>
+            <p className="font-mono text-xs tracking-[0.16em] uppercase text-muted-cyber mb-6">{comp.duration}</p>
 
-            <div className="space-y-3">
+            <div className="space-y-3.5">
               {comp.highlights.map((h, i) => (
-                <div key={i} className="flex gap-2">
-                  <span className="text-[rgba(30,50,90,0.3)] mt-1 shrink-0">•</span>
-                  <p className="text-sm text-[rgba(30,50,90,0.7)] leading-relaxed">{h}</p>
+                <div key={i} className="flex gap-3">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(0,229,255,0.85)]" />
+                  <p className="text-sm text-readable leading-relaxed">{h}</p>
                 </div>
               ))}
             </div>
