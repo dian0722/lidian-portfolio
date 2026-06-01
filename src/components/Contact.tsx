@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
 import { Mail, Phone, Download, Copy, Check } from 'lucide-react'
+import productResume from '../assets/documents/resume-product-planning.pdf'
+import overseasResume from '../assets/documents/resume-overseas-market.pdf'
 import wechatQr from '../assets/photos/wechat-qr.png'
 
 export default function Contact() {
@@ -106,7 +108,8 @@ export default function Contact() {
             <motion.a
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
-              href="#"
+              href={productResume}
+              download="李典的简历-产品策划2.pdf"
               className="flex items-center gap-4 p-5 rounded-md border border-cyan-200/10 bg-white/[0.035] hover:bg-cyan-300/8 hover:border-cyan-200/24 transition-colors group"
             >
               <div className="cyber-icon p-3 rounded-md">
@@ -122,7 +125,8 @@ export default function Contact() {
             <motion.a
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
-              href="#"
+              href={overseasResume}
+              download="李典简历-海外市场.pdf"
               className="flex items-center gap-4 p-5 rounded-md border border-violet-200/10 bg-white/[0.035] hover:bg-violet-300/8 hover:border-violet-200/24 transition-colors group"
             >
               <div className="cyber-icon p-3 rounded-md">
